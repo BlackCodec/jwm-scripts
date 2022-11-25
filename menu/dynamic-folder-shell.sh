@@ -1,4 +1,5 @@
 #!/bin/sh
+### RELEASE: 20221125.1635
 ### Change this line to set the icon to use
 CURRENT_ICON_THEME="${HOME}/.icons/BlackCodec"
 
@@ -51,10 +52,10 @@ function getIconDir() {
 function printDir() {
   SRCDIR=$1
   DIRICO=$(getIconDir)
-  echo "<Program icon=\"${DIRICO}\" label=\"Open folder\">xdg-open \"${FILEDIR}/\"</Program>"
+  echo "<Program icon=\"${DIRICO}\" label=\"Open folder\">xdg-open \"${SRCDIR}/\"</Program>"
   if [ $(find ${SRCDIR} -mindepth 1 -maxdepth 1 -type d | wc -l) -gt 0 ]; then
     printSep
-    for THE_DIR_NAME in $(find ${SRCDIR} -mindepth 1 -maxdepth 1 -type d ); do
+    for THE_DIR_NAME in $(find ${SRCDIR} -mindepth 1 -maxdepth 1 -type d | sort ); do
       THE_DIR_NAME=$(echo "${THE_DIR_NAME}" | sed "s|//|/|g")
       echo "<Dynamic icon=\"${DIRICO}\" label=\"$(basename ${THE_DIR_NAME})\">"
       echo "exec:${EXEC_FILE_NAME} \"${THE_DIR_NAME}\""
@@ -66,7 +67,7 @@ function printDir() {
 function printFile() {
   FILEDIR=$1
   if [ $(find ${FILEDIR} -maxdepth 1 -type f | wc -l) -gt 0 ]; then
-    for THE_FILE_NAME in $(find ${FILEDIR} -maxdepth 1 -type f ); do
+    for THE_FILE_NAME in $(find ${FILEDIR} -maxdepth 1 -type f | sort ); do
       THE_FILE_NAME=$(echo "${THE_FILE_NAME}" | sed "s|//|/|g")
       FILEICO=$(getIconFile ${THE_FILE_NAME})
       echo "<Program icon=\"${FILEICO}\" label=\"$(basename ${THE_FILE_NAME})\">xdg-open \"${THE_FILE_NAME}\"</Program>"
